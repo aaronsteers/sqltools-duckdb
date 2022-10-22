@@ -1,12 +1,12 @@
 {
-  "name": "driver-template",
-  "displayName": "Driver Template",
-  "description": "Driver Template to be used as base for new VSCode SQLTools drivers",
+  "name": "sqltools-duckdb",
+  "displayName": "DuckDB Driver for SQLTools",
+  "description": "DuckDB Driver to be used with SQLTools.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.42.0"
   },
-  "publisher": "mtxr",
+  "publisher": "aaronsteers",
   "license": "MIT",
   "repository": {},
   "bugs": {},
@@ -37,6 +37,7 @@
   "dependencies": {
     "@sqltools/base-driver": "latest",
     "@sqltools/types": "latest",
+    "duckdb": "^0.5.1",
     "uuid": "^7.0.2"
   },
   "devDependencies": {

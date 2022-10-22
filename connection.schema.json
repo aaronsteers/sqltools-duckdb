@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "database": {
-      "title": "Database file",
+      "title": "Database file path",
       "type": "string",
       "minLength": 1
     }
