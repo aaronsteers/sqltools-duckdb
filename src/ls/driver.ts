@@ -2,6 +2,7 @@ import AbstractDriver from '@sqltools/base-driver';
 import queries from './queries';
 import { IConnectionDriver, MConnectionExplorer, NSDatabase, ContextValue, Arg0 } from '@sqltools/types';
 import { v4 as generateId } from 'uuid';
+import { Database, Connection } from 'duckdb';
 
 /**
  * set Driver lib to the type of your connection.
@@ -11,10 +12,10 @@ import { v4 as generateId } from 'uuid';
  * type DriverLib = Pool;
  * type DriverOptions = PoolConfig;
  *
- * This will give you completions iside of the library
+ * This will give you completions inside of the library
  */
-type DriverLib = typeof fakeDbLib;
-type DriverOptions = any;
+type DriverLib = typeof Connection;
+type DriverOptions = Database;
 
 /**
  * MOCKED DB DRIVER
@@ -44,7 +45,7 @@ const fakeDbLib = {
 /* LINES ABOVE CAN BE REMOVED */
 
 
-export default class YourDriverClass extends AbstractDriver<DriverLib, DriverOptions> implements IConnectionDriver {
+export default class DuckDBDriverClass extends AbstractDriver<DriverLib, DriverOptions> implements IConnectionDriver {
 
   /**
    * If you driver depends on node packages, list it below on `deps` prop.
@@ -52,8 +53,7 @@ export default class YourDriverClass extends AbstractDriver<DriverLib, DriverOpt
    */
   public readonly deps: typeof AbstractDriver.prototype['deps'] = [{
     type: AbstractDriver.CONSTANTS.DEPENDENCY_PACKAGE,
-    name: 'lodash',
-    // version: 'x.x.x',
+    name: 'duckdb',
   }];
 
 
@@ -72,21 +72,22 @@ export default class YourDriverClass extends AbstractDriver<DriverLib, DriverOpt
       return this.connection;
     }
 
-    this.needToInstallDependencies && await this.needToInstallDependencies();
+    // this.needToInstallDependencies && await this.needToInstallDependencies();
     /**
      * open your connection here!!!
      */
-
-    this.connection = fakeDbLib.open();
+    let path = "/path/to/my.duckdb"
+    
+    this.connection = Database.connect(this.credentials.database ?? path);
     return this.connection;
   }
 
   public async close() {
     if (!this.connection) return Promise.resolve();
     /**
-     * cose you connection here!!
+     * close your connection here!!
      */
-    await fakeDbLib.close();
+    await Database.close(null);
     this.connection = null;
   }
 
